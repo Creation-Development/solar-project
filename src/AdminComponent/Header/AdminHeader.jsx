@@ -82,6 +82,11 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export default function AdminHeader() {
+    React.useEffect(() => {
+        if(!localStorage.getItem("user")){
+            setOpen(false)
+        }
+    }, []);
     const [openSubMenu, setOpenSubMenu] = React.useState(true);
 
     const handleClick = () => {
@@ -106,15 +111,18 @@ export default function AdminHeader() {
             <CssBaseline />
             <AppBar position="fixed" open={open}>
                 <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        edge="start"
-                        sx={{ mr: 2, ...(open && { display: 'none' }) }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
+                    {localStorage.getItem("user") ?
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            onClick={handleDrawerOpen}
+                            edge="start"
+                            sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        :
+                        null}
                     <Typography variant="h6" noWrap component="div">
                         Soleos Admin Panel
                     </Typography>
