@@ -24,28 +24,8 @@ import { visuallyHidden } from '@mui/utils';
 import { Button } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'
-
-function createData(name, calories, fat, carbs, protein) {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-  };
-}
-const handleDelete = () => {
-  console.log("Deleted");
-}
-
-// const rows = [
-//   createData('Home Page', 2, 0, 1,<Button variant='contained' onClick={handleDelete} color='error'><VisibilityIcon fontSize={"23"}/></Button>),
-//   createData('Home Page', 2, 0, 1,<Button variant='contained' onClick={handleDelete} color='error'><VisibilityIcon fontSize={"23"}/></Button>),
-//   createData('Home Page', 2, 0, 1,<Button variant='contained' onClick={handleDelete} color='error'><VisibilityIcon fontSize={"23"}/></Button>),
-//   createData('Home Page', 2, 0, 1,<Button variant='contained' onClick={handleDelete} color='error'><VisibilityIcon fontSize={"23"}/></Button>),
-//   createData('Home Page', 2, 0, 1,<Button variant='contained' onClick={handleDelete} color='error'><VisibilityIcon fontSize={"23"}/></Button>),
-// ];
+import { useParams } from 'react-router-dom'
+import Edit from '@mui/icons-material/Edit';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -82,13 +62,19 @@ const headCells = [
     id: 'name',
     numeric: false,
     disablePadding: true,
-    label: 'Page Name',
+    label: 'Component Name',
   },
   {
-    id: 'components',
+    id: 'sub-components',
     numeric: true,
     disablePadding: false,
-    label: 'Components',
+    label: 'Sub Components',
+  },
+  {
+    id: 'data',
+    numeric: true,
+    disablePadding: false,
+    label: 'Components Content',
   },
   {
     id: 'action',
@@ -165,7 +151,7 @@ const EnhancedTableToolbar = (props) => {
         id="tableTitle"
         component="div"
       >
-        All Pages
+        {props.title}
       </Typography>
       <Tooltip title="Filter list">
         <IconButton>
@@ -180,7 +166,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function AllPages() {
+export default function PageComponents() {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
@@ -188,10 +174,11 @@ export default function AllPages() {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [rows, setRow] = React.useState([]);
+  const {id} = useParams()
   React.useEffect(() => {
-    axios.get('http://localhost:5000/api/component/all')
+    axios.get(`http://localhost:5000/api/component/${id}`)
       .then((res) => {
-        setRow(res.data)
+        setRow(res.data.data)
       })
       .catch((err) => {
         console.log(err);
@@ -243,9 +230,9 @@ export default function AllPages() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  const navigate = useNavigate()
-  const handleRedirect = (event, id) => {
-    navigate(`/admin/page/${id}`)
+
+  const handleChangeDense = (event) => {
+    setDense(event.target.checked);
   };
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
@@ -257,7 +244,7 @@ export default function AllPages() {
   return (
     <Box sx={{ width: '75%', margin: "auto" }}>
       <Paper elevation={6} sx={{ width: '100%', padding: "30px", mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar title={rows.name} numSelected={selected.length} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -273,16 +260,16 @@ export default function AllPages() {
               rowCount={rows.length}
             />
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
+              {stableSort(Object.keys(rows), getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
+                  const isItemSelected = isSelected(row);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
+                      onClick={(event) => handleClick(event, row)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -296,10 +283,11 @@ export default function AllPages() {
                         scope="row"
                         padding="none"
                       >
-                        {row.name}
+                        {row}
                       </TableCell>
-                      <TableCell align="center">{row.data.item ? Object.keys(row.data.item).length : Object.keys(row.data).length}</TableCell>
-                      <TableCell align="center"><Button onClick={(e) => (handleRedirect(e, row._id))} color='success' varient='contained'><VisibilityIcon /></Button></TableCell>
+                      <TableCell align="center">{row === 'item' ? Object.keys(rows.item).length : typeof(rows[row]) !== 'string'?Object.keys(rows[row]).length:"-"  }</TableCell>
+                      <TableCell align="center">{row === 'item' ? Object.keys(rows.item).length : typeof(rows[row]) !== 'string'?"-":rows[row].slice(0,50)  }</TableCell>
+                      <TableCell align="center"><Button color='success' varient='contained'><Edit /></Button></TableCell>
                     </TableRow>
                   );
                 })}
