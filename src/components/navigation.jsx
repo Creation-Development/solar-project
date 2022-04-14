@@ -28,7 +28,7 @@ export const Navigation = () => {
         >
           <ul className='nav navbar-nav navbar-right'>
             <li className='active'>
-              <a href='#page-top' className='page-scroll'>
+              <a href='#homepage' className='page-scroll'>
                 Home
               </a>
             </li>
