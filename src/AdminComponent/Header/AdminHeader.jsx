@@ -28,7 +28,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 
@@ -82,9 +82,10 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export default function AdminHeader() {
+    const navigation = useNavigate()
     React.useEffect(() => {
-        if(!localStorage.getItem("user")){
-            setOpen(false)
+        if(!localStorage.getItem("user_token")){
+            navigation('/admin/login')
         }
     }, []);
     const [openSubMenu, setOpenSubMenu] = React.useState(true);
@@ -111,7 +112,7 @@ export default function AdminHeader() {
             <CssBaseline />
             <AppBar position="fixed" open={open}>
                 <Toolbar>
-                    {localStorage.getItem("user") ?
+                    {localStorage.getItem("user_token") ?
                         <IconButton
                             color="inherit"
                             aria-label="open drawer"
