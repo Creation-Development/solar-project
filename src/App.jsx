@@ -6,8 +6,7 @@ import AdminLogin from './AdminComponent/Login/AdminLogin'
 import AdminRedirect from './AdminComponent/AdminRedirect'
 import Logout from './AdminComponent/Logout/Logout'
 import AllPages from './AdminComponent/AllPages/AllPages'
-import AdminHeader from './AdminComponent/Header/AdminHeader'
-// import PageComponents from './AdminComponent/PageComponents/PageComponents';
+import HeaderEdit from './AdminComponent/EditComponent/Header/HeaderEdit';
 
 
 const App = () => {
@@ -19,7 +18,7 @@ const App = () => {
         <Route exact path="/admin" element={<AdminRedirect />} />
         <Route exact path="/admin/login" element={<AdminLogin />} />
         <Route exact path="/" element={<ClientSide />} />
-        {/* <Route exact path="/admin/page/:id" element={<PageComponents />} /> */}
+        <Route exact path="/admin/header/:id" element={<HeaderEdit />} />
       </Routes>
     </Router>
   );

@@ -28,18 +28,6 @@ import { useNavigate } from 'react-router-dom'
 import AdminHeader from '../Header/AdminHeader';
 import AdminRedirect from '../AdminRedirect';
 
-function createData(name, calories, fat, carbs, protein) {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-  };
-}
-const handleDelete = () => {
-  console.log("Deleted");
-}
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
