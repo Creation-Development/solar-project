@@ -25,9 +25,23 @@
   border-radius: 15px;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
 }
+.card-edit{
+  margin-top: 50px;
+  width: 95% !important;
+  margin: auto;
+  padding: 50px;
+  border-radius: 15px;
+  /* box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5); */
+}
 .admin-title{
   text-align: center;
   margin-block: 50px !important;
+  font-weight: 600;
+  color: gray;
+}
+.component-title{
+  text-align: center;
+  margin-block: 10px !important;
   font-weight: 600;
   color: gray;
 }

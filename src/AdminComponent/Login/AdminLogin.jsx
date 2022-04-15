@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import AdminRedirect from '../AdminRedirect';
+import { toast } from 'react-toastify';
 
 const theme = createTheme();
 
@@ -34,6 +35,7 @@ export default function SignIn() {
       .then((res) => {
         localStorage.setItem("user_id", res.data.id)
         localStorage.setItem("user_token", res.data.token)
+        toast.success("Login successfully")
         navigation('/admin/all-pages')
       })
       .catch((err) => {

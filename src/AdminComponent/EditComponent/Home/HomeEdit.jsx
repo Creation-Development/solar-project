@@ -21,10 +21,9 @@ import { toast } from 'react-toastify';
 
 const theme = createTheme();
 
-export default function HeaderEdit() {
-    const [HeaderData, setHeaderData] = useState([]);
-    const [listItem, setListItem] = useState([]);
-    const [image, setImage] = useState({});
+export default function HomeEdit() {
+    const [title, setTitle] = useState('');
+    const [paragraph, setParagraph] = useState('');
     const { id } = useParams()
     const navigation = useNavigate()
     if (!localStorage.getItem("user_token")) {
@@ -33,27 +32,18 @@ export default function HeaderEdit() {
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_SERVER_URL}/component/${id}`)
             .then((res) => {
-                setHeaderData(res.data.data)
-                setListItem(res.data.data.listItem)
+                console.log(res.data.data);
+                setTitle(res.data.data.title)
+                setParagraph(res.data.data.paragraph)
             })
             .catch((err) => {
                 console.log(err);
             })
     }, [])
-
-    const handleState = (e, i) => {
-        e.preventDefault()
-        listItem[i] = e.target.value
-        setListItem(listItem)
-    }
-
     const handleSubmit = (event) => {
         event.preventDefault()
-        const data = new FormData(event.currentTarget);
-        data.append("listItem", listItem)
-        data.append("logo", image)
 
-        axios.post(`${process.env.REACT_APP_SERVER_URL}/component/header/${id}`, {listItem:listItem})
+        axios.post(`${process.env.REACT_APP_SERVER_URL}/component/home/${id}`, { title: title, paragraph: paragraph })
             .then((res) => {
                 toast.success("Update successfully")
                 navigation('/admin/all-pages')
@@ -69,7 +59,7 @@ export default function HeaderEdit() {
             <AdminHeader />
             <ThemeProvider theme={theme}>
                 {/* <AdminRedirect /> */}
-                <Typography variant="h4" className='component-title'>Header</Typography>
+                <Typography variant="h4" className='component-title'>Home</Typography>
                 <Container className='card-edit' component="main" maxWidth="xs">
                     <CssBaseline />
                     <Box
@@ -81,35 +71,27 @@ export default function HeaderEdit() {
                     >
                         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                             <Typography component="h1" variant="h6">
-                                Logo
+                                Title
                             </Typography>
                             <TextField
                                 margin="normal"
                                 required
+                                value={title}
                                 fullWidth
-                                onChange={(e) => (setImage(e.target.files[0]))}
-                                type='file'
-                                id="logo"
-                                autoFocus
+                                onChange={(e) => (setTitle(e.target.value))}
+                                id="title"
                             />
-                            {/* <img style={{ marginBottom: "30px" }} src={HeaderData.logo} alt="" height={70} width={170} /> */}
                             <Typography component="h1" variant="h6">
-                                Header List Item
+                                Paragraph
                             </Typography>
-                            {
-                                HeaderData.listItem?.map((value, index) => (
-                                    <TextField
-                                        key={index}
-                                        margin="normal"
-                                        defaultValue={value}
-                                        required
-                                        onChange={(e) => (handleState(e, index))}
-                                        fullWidth
-                                        id={`listItem-${index}`}
-                                        autoComplete="current-password"
-                                    />
-                                ))
-                            }
+                            <TextField
+                                margin="normal"
+                                value={paragraph}
+                                required
+                                onChange={(e) => (setParagraph(e.target.value))}
+                                fullWidth
+                                id='paragraph'
+                            />
                             <Button
                                 type="submit"
                                 fullWidth
