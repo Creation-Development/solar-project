@@ -1,7 +1,4 @@
 {
-  "Navigation": {
-    "logo": "img/promech-logo.png"
-  },
   "Header": {
     "title": "We are a Landing Page",
     "paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sed commodo nibh ante facilisis bibendum."
@@ -127,11 +124,6 @@
       "img": "img/team/03.jpg",
       "name": "Jane Doe",
       "job": "Senior Designer"
-    },
-    {
-      "img": "img/team/04.jpg",
-      "name": "Karen Doe",
-      "job": "Project Manager"
     }
   ],
   "Contact": {

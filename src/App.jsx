@@ -1,32 +1,42 @@
-import { React } from 'react'
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { useState, useEffect } from "react";
+import { HomePage } from "./components/HomePage";
+import { Features } from "./components/features";
+import { About } from "./components/about";
+import { Services } from "./components/services";
+import { Gallery } from "./components/gallery";
+import { Testimonials } from "./components/testimonials";
+import { Team } from "./components/Team";
+import { Contact } from "./components/contact";
+import JsonData from "./data/data.json";
+import SmoothScroll from "smooth-scroll";
 import "./App.css";
-import ClientSide from "./ClientSide";
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import AdminLogin from './AdminComponent/Login/AdminLogin'
-import AdminRedirect from './AdminComponent/AdminRedirect'
-import Logout from './AdminComponent/Logout/Logout'
-import AllPages from './AdminComponent/AllPages/AllPages'
-import HeaderEdit from './AdminComponent/EditComponent/Header/HeaderEdit';
-import HomeEdit from './AdminComponent/EditComponent/Home/HomeEdit';
+import Footer from "./components/Footer";
+import { Header } from "./components/Header";
 
-require('dotenv').config()
+export const scroll = new SmoothScroll('a[href*="#"]', {
+  speed: 1000,
+  speedAsDuration: true,
+});
 
 const App = () => {
+  const [landingPageData, setLandingPageData] = useState({});
+  useEffect(() => {
+    setLandingPageData(JsonData);
+  }, []);
+
   return (
-    <Router>
-      <ToastContainer style={{marginTop:"50px"}}/>
-      <Routes>
-        <Route exact path="/admin/logout" element={<Logout />} />
-        <Route exact path="/admin/all-pages" element={<AllPages />} />
-        <Route exact path="/admin" element={<AdminRedirect />} />
-        <Route exact path="/admin/login" element={<AdminLogin />} />
-        <Route exact path="/" element={<ClientSide />} />
-        <Route exact path="/admin/header/:id" element={<HeaderEdit />} />
-        <Route exact path="/admin/home/:id" element={<HomeEdit />} />
-      </Routes>
-    </Router>
+    <div>
+      <Header />
+      <HomePage data={landingPageData.Header} />
+      <Features data={landingPageData.Features} />
+      <About data={landingPageData.About} />
+      <Services data={landingPageData.Services} />
+      {/* <Gallery data={landingPageData.Gallery} /> */}
+      <Testimonials data={landingPageData.Testimonials} />
+      <Team data={landingPageData.Team} />
+      <Contact data={landingPageData.Contact} />
+      <Footer />
+    </div>
   );
 };
 

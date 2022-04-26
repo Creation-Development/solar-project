@@ -8,7 +8,7 @@ export const Testimonials = (props) => {
         <div className='row'>
           {props.data
             ? props.data.map((d, i) => (
-                <div key={`${d.name}-${i}`} className='col-md-4'>
+                <div key={`${d.name}-${i}`} className='col-lg-4 col-md-6 col-sm-12'>
                   <div className='testimonial'>
                     <div className='testimonial-image'>
                       {' '}
